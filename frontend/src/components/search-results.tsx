@@ -6,6 +6,7 @@ import { MovieCard } from '../components/movie-card';
 import { createMovie, getMovies, removeMovie, searchMovies } from '../lib/api';
 import { Movie } from '../types';
 import Pagination from './pagination';
+import { Loader } from 'lucide-react';
 
 
 export function SearchResults() {
@@ -33,13 +34,18 @@ export function SearchResults() {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [favorites, setFavorites] = useState<Movie[]>([]);
     const [totalPages, setTotalPages] = useState<number>(1);
+    const [loading, setLoading] = useState<boolean>(false);
 
 
 
     useEffect(() => {
-        getMovies().then((data) => {
-            setFavorites(data)
-        })
+        (async function () {
+            setLoading(true);
+            const movies = await getMovies()
+            setFavorites(movies);
+            setLoading(false);
+        })()
+
     }, []);
 
     useEffect(() => {
@@ -68,6 +74,15 @@ export function SearchResults() {
         const newFavorites = favorites.filter((fav) => fav.imdbID !== movie.imdbID);
         setFavorites(newFavorites);
     };
+
+    if (loading) {
+        return (
+            <div className='flex justify-center items-center'>
+                <Loader className='animate-spin' />
+            </div>
+        );
+    }
+
 
     return (
         <div className='flex flex-col gap-6 items-center'>
