@@ -51,7 +51,7 @@ export class MoviesService {
   async update(id: string, updateMovieDto: UpdateMovieDto) {
     const movie = await this.findOne(id);
     const updated = await this.prisma.movie.update({
-      where: { id: movie.id },
+      where: { imdbID: movie.imdbID },
       data: {
         ...updateMovieDto
       }
