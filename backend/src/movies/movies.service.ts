@@ -15,7 +15,7 @@ export class MoviesService {
 
     const movieExist = await this.prisma.movie.findUnique({
       where: {
-        movieId: createMovieDto.movieId
+        imdbID: createMovieDto.imdbID
       }
     })
     if (movieExist) {
@@ -24,10 +24,7 @@ export class MoviesService {
 
     const movie = await this.prisma.movie.create({
       data: {
-        movieId: createMovieDto.movieId,
-        title: createMovieDto.title,
-        image: createMovieDto.image,
-        year: createMovieDto.year
+        ...createMovieDto,
       }
     });
 
@@ -38,10 +35,10 @@ export class MoviesService {
     return this.prisma.movie.findMany();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const movie = await this.prisma.movie.findUnique({
       where: {
-        id
+        imdbID: id
       }
     })
     if (!movie) {
@@ -51,7 +48,7 @@ export class MoviesService {
   }
 
 
-  async update(id: number, updateMovieDto: UpdateMovieDto) {
+  async update(id: string, updateMovieDto: UpdateMovieDto) {
     const movie = await this.findOne(id);
     const updated = await this.prisma.movie.update({
       where: { id: movie.id },
@@ -63,9 +60,9 @@ export class MoviesService {
     return updated;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const movie = await this.findOne(id)
-    const result = this.prisma.movie.delete({ where: { id: movie.id } })
+    const result = this.prisma.movie.delete({ where: { imdbID: movie.imdbID } })
     return result;
   }
 }

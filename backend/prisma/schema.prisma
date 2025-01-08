@@ -14,9 +14,10 @@ datasource db {
 }
 
 model Movie {
-  id      Int    @id @default(autoincrement())
-  movieId String @unique
-  title   String
-  year    Int
-  image   String
+  id     Int    @id @default(autoincrement())
+  imdbID String @unique
+  Title  String
+  Year   Int
+  Poster String
+  Type   String
 }

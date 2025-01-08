@@ -3,14 +3,17 @@ import { IsNumber, IsString } from "class-validator";
 export class CreateMovieDto {
 
     @IsString()
-    movieId: string;
+    imdbID: string;
 
     @IsString()
-    title: string;
+    Title: string;
 
     @IsNumber()
-    year: number;
+    Year: number;
 
     @IsString()
-    image: string;
+    Poster: string;
+
+    @IsString()
+    Type: string;
 }
