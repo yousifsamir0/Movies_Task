@@ -1,5 +1,7 @@
 export interface Movie {
+    id?: number;
     imdbID: string;
+    Type: string;
     Title: string;
     Year: string;
     Poster: string;
@@ -16,4 +18,5 @@ export interface IQueryParams {
     y?: string;
     page?: string;
 }
+
 

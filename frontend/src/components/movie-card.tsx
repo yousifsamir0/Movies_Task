@@ -6,10 +6,11 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 interface MovieCardProps {
     movie: Movie;
     onAddToFavorites: (movie: Movie) => void;
+    onRemoveToFavourites: (movie: Movie) => void;
     isFavorite: boolean;
 }
 
-export function MovieCard({ movie, onAddToFavorites, isFavorite }: MovieCardProps) {
+export function MovieCard({ movie, onAddToFavorites, onRemoveToFavourites, isFavorite }: MovieCardProps) {
     return (
         <Card className="w-full">
             <CardHeader>
@@ -28,7 +29,9 @@ export function MovieCard({ movie, onAddToFavorites, isFavorite }: MovieCardProp
             </CardContent>
             <CardFooter>
                 <Button
-                    onClick={() => onAddToFavorites(movie)}
+                    onClick={() => {
+                        (isFavorite) ? onRemoveToFavourites(movie) : onAddToFavorites(movie);
+                    }}
                     variant={isFavorite ? "secondary" : "default"}
                     className="w-full"
                 >

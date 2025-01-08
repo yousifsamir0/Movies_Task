@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { MovieCard } from '../components/movie-card';
-import { searchMovies } from '../lib/api';
+import { createMovie, getMovies, removeMovie, searchMovies } from '../lib/api';
 import { Movie } from '../types';
 import Pagination from './pagination';
 
@@ -37,6 +37,12 @@ export function SearchResults() {
 
 
     useEffect(() => {
+        getMovies().then((data) => {
+            setFavorites(data)
+        })
+    }, []);
+
+    useEffect(() => {
         if (s) {
             searchMovies({ s, y, type, page }).then((data) => {
                 console.log(data)
@@ -48,15 +54,19 @@ export function SearchResults() {
     }, [searchParams]);
 
 
-    const toggleFavorite = (movie: Movie) => {
+    const addToFavorite = async (movie: Movie) => {
 
-        // add favorite to localstorage for now 
-        // Todo: using api
+        await createMovie(movie);
         const newFavorites = favorites.some((fav) => fav.imdbID === movie.imdbID)
             ? favorites.filter((fav) => fav.imdbID !== movie.imdbID)
             : [...favorites, movie];
         setFavorites(newFavorites);
-        localStorage.setItem('favorites', JSON.stringify(newFavorites));
+    };
+
+    const removeFavorite = async (movie: Movie) => {
+        await removeMovie(movie)
+        const newFavorites = favorites.filter((fav) => fav.imdbID !== movie.imdbID);
+        setFavorites(newFavorites);
     };
 
     return (
@@ -67,7 +77,8 @@ export function SearchResults() {
                     <MovieCard
                         key={movie.imdbID}
                         movie={movie}
-                        onAddToFavorites={toggleFavorite}
+                        onAddToFavorites={addToFavorite}
+                        onRemoveToFavourites={removeFavorite}
                         isFavorite={favorites.some((fav) => fav.imdbID === movie.imdbID)}
                     />
                 ))}
