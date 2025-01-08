@@ -1,7 +1,7 @@
 import { IQueryParams, Movie, SearchResponse } from '../types';
 import axios, { isAxiosError } from "axios"
 
-const API_URL = process.env.OMDB_BASE_URL || "http://www.localhost:3000/";
+const API_URL = process.env.API_BASE_URL || "http://www.localhost:3001/";
 
 export async function searchMovies(params: IQueryParams): Promise<SearchResponse> {
     try {
