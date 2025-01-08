@@ -2,19 +2,22 @@ import Image from 'next/image';
 import { Movie } from '../types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { DialogTrigger } from './ui/dialog';
 
 interface MovieCardProps {
     movie: Movie;
     onAddToFavorites: (movie: Movie) => void;
     onRemoveToFavourites: (movie: Movie) => void;
     isFavorite: boolean;
+    setEditMovie?: (movie: Movie) => void;
 }
 
-export function MovieCard({ movie, onAddToFavorites, onRemoveToFavourites, isFavorite }: MovieCardProps) {
+export function MovieCard({ movie, onAddToFavorites, onRemoveToFavourites, setEditMovie, isFavorite }: MovieCardProps) {
     return (
         <Card className="w-full">
             <CardHeader>
                 <CardTitle className="line-clamp-1">{movie.Title}</CardTitle>
+                {setEditMovie && <DialogTrigger onClick={() => setEditMovie(movie)}>Edit Movie</DialogTrigger>}
             </CardHeader>
             <CardContent>
                 <div className="relative aspect-[2/3] w-full">

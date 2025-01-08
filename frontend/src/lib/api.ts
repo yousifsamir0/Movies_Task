@@ -60,6 +60,24 @@ export async function removeMovie(movie: Movie): Promise<Movie> {
     }
 }
 
+export async function updateMovie(movie: Movie): Promise<Movie> {
+    try {
+        const response = await axios.patch(`${API_URL}movies/${movie.imdbID}`, {
+            ...movie,
+            Year: parseInt(movie.Year)
+        });
+        return response.data;
+    }
+    catch (e) {
+        if (isAxiosError(e) && e.status === 404) {
+            throw new Error("404")
+        } else {
+            throw new Error('Failed to fetch movies');
+        }
+    }
+}
+
+
 
 export async function getMovieById(params: IQueryParams): Promise<SearchResponse> {
     try {
